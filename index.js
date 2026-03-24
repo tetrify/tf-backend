@@ -1,7 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
+import authRoutes from './routes/authRoutes.js';
+import { errorHandler } from './middlewares/errorMiddleware.js';
+import { setupSwagger } from './swagger.js';
 dotenv.config();
 
 const app = express();
@@ -25,6 +27,15 @@ mongoose.connect(MONGO_URI)
 app.get('/', (req, res) => {
   res.send('Server is running and connected to MongoDB');
 });
+
+// Swagger UI Docs
+setupSwagger(app);
+
+// Auth Routes
+app.use('/auth', authRoutes);
+
+// Error Middleware
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
