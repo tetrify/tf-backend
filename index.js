@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
+import advertiserRoutes from './routes/advertiserRoutes.js';
 import { errorHandler } from './middlewares/errorMiddleware.js';
 import { setupSwagger } from './swagger.js';
 dotenv.config();
@@ -33,6 +34,9 @@ setupSwagger(app);
 
 // Auth Routes
 app.use('/auth', authRoutes);
+
+// Advertiser Routes
+app.use('/advertiser', advertiserRoutes);
 
 // Error Middleware
 app.use(errorHandler);

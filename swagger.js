@@ -15,6 +15,20 @@ const options = {
         description: 'Development server',
       },
     ],
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        BearerAuth: [],
+      },
+    ],
   },
   apis: ['./routes/*.js'], // Reads annotations from route files
 };
