@@ -38,13 +38,16 @@ export const signup = catchAsync(async (req, res) => {
     throw new ApiError(400, 'User with this email already exists');
   }
 
-  // 1. Create the Advertiser entity first
-  const advertiser = new Advertiser({
-    name,
-    shopify_store_url,
-    shopify_store_name
-  });
-  const savedAdvertiser = await advertiser.save();
+  // 1. Find existing Advertiser by Shopify store URL or create a new one
+  let savedAdvertiser = await Advertiser.findOne({ shopify_store_url });
+  if (!savedAdvertiser) {
+    const advertiser = new Advertiser({
+      name,
+      shopify_store_url,
+      shopify_store_name
+    });
+    savedAdvertiser = await advertiser.save();
+  }
 
   // 2. Hash Password
   const salt = await bcrypt.genSalt(10);
